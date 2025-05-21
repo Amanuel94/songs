@@ -1,7 +1,7 @@
 import { type RequestHandler } from "express";
 import joi from "../../utils/joi";
 import Song from "../../models/Song";
-import { sanitizeStringInput } from "../../utils/input";
+import { sanitizeStringInput, updateSongStat } from "../../utils/input";
 
 const createSong: RequestHandler = async (req, res, next) => {
   try {
@@ -22,16 +22,19 @@ const createSong: RequestHandler = async (req, res, next) => {
 
     const { title, artist, album, genre } = req.body;
 
-
     const song = new Song({
       title: sanitizeStringInput(title),
       artist: sanitizeStringInput(artist),
       album: album ? sanitizeStringInput(album) : null,
       genre: sanitizeStringInput(genre),
-      uploadedBy:  req.auth?.uid,
+      uploadedBy: req.auth?.uid,
     });
 
     await song.save();
+
+    // make incremental update to song stat
+    await updateSongStat(song, 1);
+
     const { _id, ...data } = song.toObject();
     res.status(201).json({
       message: "Succesfully created song",

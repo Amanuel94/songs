@@ -1,11 +1,15 @@
 import { type RequestHandler } from "express";
 import joi from "../../utils/joi";
 import Song from "../../models/Song";
-import { sanitizeStringInput } from "../../utils/input";
+import {
+  sanitizeStringInput,
+  updateKeyValueAsync,
+  updateSongStat,
+} from "../../utils/input";
+import SongStat from "../../models/SongStat";
 
-const updateSong: RequestHandler = async (req, res, next) => {
+const deleteSong: RequestHandler = async (req, res, next) => {
   try {
-    
     const id = req.params.id;
     if (!id) {
       return next({
@@ -29,13 +33,16 @@ const updateSong: RequestHandler = async (req, res, next) => {
       });
     }
 
-    const song = await Song.findByIdAndDelete(id)
+    const song = await Song.findByIdAndDelete(id);
     if (!song) {
       return next({
         statusCode: 404,
         message: "Song not found",
       });
     }
+
+    // make incremental update to song stat
+    await updateSongStat(song, -1);
 
     const { _id, ...data } = song.toObject();
     res.status(201).json({
@@ -50,4 +57,4 @@ const updateSong: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default updateSong;
+export default deleteSong;

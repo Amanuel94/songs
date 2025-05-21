@@ -1,7 +1,12 @@
 import { type RequestHandler } from "express";
 import joi from "../../utils/joi";
 import Song from "../../models/Song";
-import { sanitizeStringInput } from "../../utils/input";
+import {
+  sanitizeStringInput,
+  updateKeyValueAsync,
+  updateSongStat,
+} from "../../utils/input";
+import SongStat from "../../models/SongStat";
 
 const updateSong: RequestHandler = async (req, res, next) => {
   try {
@@ -60,6 +65,10 @@ const updateSong: RequestHandler = async (req, res, next) => {
         message: "Song not found",
       });
     }
+
+    // make incremental update to song stat
+    await updateSongStat(oldSong, -1);
+    await updateSongStat(song, 1);
 
     const { _id, ...data } = song.toObject();
     res.status(201).json({
