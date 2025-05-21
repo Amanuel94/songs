@@ -10,10 +10,6 @@ const instance = new Schema<ISongStat>(
       type: Number,
       required: true,
     },
-    numberOfUsers: {
-      type: Number,
-      required: true,
-    },
     numberOfSongsByGenre: [
       {
         key: String,
@@ -27,7 +23,19 @@ const instance = new Schema<ISongStat>(
       },
     ],
     numberOfSongsByAlbum: [
-      { 
+      {
+        key: String,
+        count: Number,
+      },
+    ],
+    numberOfAlbumsByArtist: [
+      {
+        key: String,
+        count: Number,
+      },
+    ],
+    numberOfAlbumsByGenre: [
+      {
         key: String,
         count: Number,
       },

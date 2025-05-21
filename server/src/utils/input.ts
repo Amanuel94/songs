@@ -37,14 +37,11 @@ export const updateKeyValueAsync = async (
   }
 };
 
-
 // Function to update the song stat
 export const updateSongStat = async (
   song: { genre: string; artist: string; album: string | null },
   v: number
 ) => {
-
-
   // update the song stat for today
   const today = new Date();
   const date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -66,12 +63,18 @@ export const updateSongStat = async (
     // if no stat exists for today, create a new one
     songStat = new SongStat({
       numberOfSongs: lastDayStat ? lastDayStat.numberOfSongs : 0,
-      numberOfUsers: lastDayStat ? lastDayStat.numberOfUsers : 0,
       numberOfSongsByGenre: lastDayStat ? lastDayStat.numberOfSongsByGenre : {},
       numberOfSongsByArtist: lastDayStat
         ? lastDayStat.numberOfSongsByArtist
         : {},
       numberOfSongsByAlbum: lastDayStat ? lastDayStat.numberOfSongsByAlbum : {},
+      numberOfAlbumsByArtist: lastDayStat
+        ? lastDayStat.numberOfAlbumsByArtist
+        : {},
+      numberOfAlbumsByGenre: lastDayStat
+        ? lastDayStat.numberOfAlbumsByGenre
+        : {},
+      date: date,
     });
   }
 
@@ -82,8 +85,9 @@ export const updateSongStat = async (
 
   if (song.album) {
     await updateKeyValueAsync(songStat.numberOfSongsByAlbum, song.album, v);
+    await updateKeyValueAsync(songStat.numberOfAlbumsByArtist, song.artist, v);
+    await updateKeyValueAsync(songStat.numberOfAlbumsByGenre, song.genre, v);
   }
-
   await songStat.save();
   return songStat;
 };

@@ -16,7 +16,6 @@ export interface Song {
 
 export interface SongStat{
   numberOfSongs: number
-  numberOfUsers: number
   numberOfSongsByGenre: {
     key: string
     count: number
@@ -29,5 +28,13 @@ export interface SongStat{
     key: string
     count: number
   }[]
+  numberOfAlbumsByArtist: {
+    key: string
+    count: number
+  }[]
+  numberOfAlbumsByGenre: {
+    key: string
+    count: number
+  }[],
   date: Date
 } 
