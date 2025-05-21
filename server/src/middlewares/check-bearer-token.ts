@@ -22,9 +22,9 @@ const checkBearerToken: RequestHandler = (req, res, next) => {
     }
 
     req.auth = typeof auth === 'string' ? JSON.parse(auth) : auth
-
     next()
   } catch (error) {
+    console.log('error in checkBearerToken middleware:', error)
     next({
       statusCode: 401,
       message: 'Invalid token',

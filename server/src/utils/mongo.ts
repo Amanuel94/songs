@@ -17,6 +17,7 @@ class Mongo {
     if (this.isConnected) return
 
     try {
+
       console.log('⏳ Connecting to MongoDB')
 
       const db = await this.instance.connect(this.mongoUri, this.mongoOptions)
