@@ -3,7 +3,7 @@ import { MONGO_URI, MONGO_OPTIONS } from '../constants/index'
 
 class Mongo {
   instance: typeof mongoose = mongoose
-  mongoUri: string
+  mongoUri: string | undefined
   mongoOptions: mongoose.ConnectOptions
   isConnected: boolean
 
@@ -20,7 +20,7 @@ class Mongo {
 
       console.log('⏳ Connecting to MongoDB')
 
-      const db = await this.instance.connect(this.mongoUri, this.mongoOptions)
+      const db = await this.instance.connect(this.mongoUri ? this.mongoUri : "", this.mongoOptions)
       const connection = db.connection
 
       this.isConnected = connection.readyState === 1
