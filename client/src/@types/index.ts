@@ -8,3 +8,8 @@ export interface FormData {
   username: Account['username']
   password: Account['password']
 }
+
+export interface cardProp {
+  imgSrc: string
+  caption: string
+}

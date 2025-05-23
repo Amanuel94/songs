@@ -1,43 +1,31 @@
-import React, { Fragment } from 'react'
-import { useAuth } from 'contexts/AuthContext'
-import AuthModal from 'components/AuthModal'
-import Header from 'components/Header'
-import logo from 'assets/react.svg'
-import 'styles/ReactWelcome.css'
+/** @jsxImportSource @emotion/react */
+
+import Banner from "components/Banner";
+import Card from "components/card";
+import Footer from "components/footer";
+import NavBar from "components/NavBar";
+import { font, cardContStyle } from "styles";
 
 const App = () => {
+  const feats: string[] = [
+    "Join us and Add Your Favorite Tracks",
+    "Browse Our Collections as Guest",
+    "Look at Our Stats",
+  ];
+
+  const imgs: string[] = ["./concert.jpg", "./lib.jpg", "./stat.jpg"];
+
   return (
-    <div className='App'>
-      <Header />
-      <ReactWelcome />
-      <LoggedInStatus />
-      <AuthModal />
+    <div>
+      <NavBar />
+      <Banner />
+      <div css={[cardContStyle.self, font.lubrifont]}>
+        {feats.map((feat, index) => (
+          <Card imgSrc={imgs[index]} caption={feat} key={index} />
+        ))}
+      </div>
+      <Footer/>
     </div>
-  )
-}
-
-const ReactWelcome = () => {
-  return (
-    <Fragment>
-      <img src={logo} className='ReactWelcome-logo' alt='logo' />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a className='ReactWelcome-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-        Learn React
-      </a>
-    </Fragment>
-  )
-}
-
-const LoggedInStatus = () => {
-  const { isLoggedIn, account } = useAuth()
-
-  if (isLoggedIn && !!account) {
-    return <p>Hey, {account.username}! I'm happy to let you know: you are authenticated!</p>
-  }
-
-  return <p>Don't forget to start your backend server, and then authenticate yourself.</p>
-}
-
-export default App
+  );
+};
+export default App;
