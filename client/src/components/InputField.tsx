@@ -1,6 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import { InputFieldProp, IFormInput } from "@types";
 import React from "react";
 import { useController, UseControllerProps } from "react-hook-form";
+import { formStyles } from "styles/form";
 
 type AllInputFieldProps = InputFieldProp & UseControllerProps<IFormInput>;
 
@@ -12,8 +14,11 @@ const InputField: React.FC<AllInputFieldProps> = (
   const { field, fieldState } = useController({ name, ...controllerProps });
 
   return (
-    <div>
-      <label htmlFor={name}>{label}</label>
+    <div css={formStyles.inputContainer}>
+      <label htmlFor={name}>
+        {required && <span css={{ color: "red" }}>*</span>} {label}
+      </label>
+
       <br />
       <input
         id={name}
@@ -21,10 +26,17 @@ const InputField: React.FC<AllInputFieldProps> = (
         placeholder={placeholder}
         required={required}
         {...field}
+        css={formStyles.field}
       />
-      <p>{fieldState.isTouched && "Touched"}</p>
-      <p>{fieldState.isDirty && "Dirty"}</p>
-      <p>{fieldState.invalid ? "invalid" : "valid"}</p>
+      <p
+        css={[
+          formStyles.danger,
+          { visibility: fieldState.error ? "visible" : "hidden" },
+        ]}
+      >
+        {" "}
+        {fieldState.error?.message}{" "}
+      </p>
     </div>
   );
 };

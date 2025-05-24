@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 import "./index.css";
 
-const color = {
+export const color = {
   primary: "lightblue",
   primaryLight: "#b6dcf2",
-  gradient: "linear-gradient(to right, white, #b6dcf2)"
+  gradient: "linear-gradient(to right, white, #b6dcf2)",
+  danger: "red",
 };
 
 export const font = {
@@ -75,7 +76,7 @@ export const NavBarStyle = {
     position: "absolute",
     marginLeft: "-10px",
     marginTop: "40px",
-    paddingTop: "10px",
+    paddingTop:  "10px",
     padding: "10px",
     paddingRight: "20px",
     backgroundColor: color.primaryLight,
