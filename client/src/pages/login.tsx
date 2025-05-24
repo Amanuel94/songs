@@ -6,7 +6,7 @@ import { IFormInput } from "@types";
 import { formStyles } from "styles/form";
 import { color, font } from "styles";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const { handleSubmit, control } = useForm<IFormInput>({
     mode: "onBlur",
   });
@@ -23,12 +23,12 @@ const RegisterForm = () => {
         paddingTop: "2rem",
       }}
     >
-      <div css={[formStyles.self, font.lubrifont, { height: "70vh" }]}>
-        <h1> Create an Account </h1>
+      <div css={[formStyles.self, font.lubrifont, {height: "60vh"}]}>
+        <h1> Log In </h1>
         <hr css={[formStyles.separator]} />
         <form css={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
           <InputField
-            label="Enter Username"
+            label="Username"
             type="text"
             name="username"
             control={control}
@@ -47,7 +47,7 @@ const RegisterForm = () => {
             required={true}
           />
           <InputField
-            label="Enter Password"
+            label="Password"
             type="password"
             name="password"
             control={control}
@@ -61,21 +61,6 @@ const RegisterForm = () => {
             placeholder="Password"
             required={true}
           />
-
-          <InputField
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            control={control}
-            rules={{
-              required: "This field is required",
-              validate: (value, formValues) =>
-                value === formValues.password || "Passwords do not match",
-            }}
-            placeholder="Confirm Password"
-            required={true}
-          />
-
           <p
             css={[
               {
@@ -89,7 +74,7 @@ const RegisterForm = () => {
             ]}
           >
             {" "}
-            <a href="#">Aleady have an account</a> ?
+            <a href="#">New here? Create an account</a> ?
           </p>
 
           <input
@@ -103,4 +88,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
