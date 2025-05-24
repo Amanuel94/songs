@@ -1,19 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { InputFieldProp, IFormInput } from "@types";
-import React from "react";
+import { IGenericFormInput, InputFieldProp } from "@types";
+// import React from "react";
 import { useController, UseControllerProps } from "react-hook-form";
 import { formStyles } from "styles/form";
 
-type AllInputFieldProps = InputFieldProp & UseControllerProps<IFormInput>;
 
-const InputField: React.FC<AllInputFieldProps> = (
-  props: AllInputFieldProps
-) => {
-  const { label, type, placeholder, required, name, ...controllerProps } =
-    props;
-  const { field, fieldState } = useController({ name, ...controllerProps });
+function InputField<T extends IGenericFormInput>(
+    props: InputFieldProp & UseControllerProps<T>
+) {
+    const { label, type, placeholder, required, name, ...controllerProps } = props;
+    const { field, fieldState } = useController({ name, ...controllerProps });
 
-  return (
+    return (
     <div css={formStyles.inputContainer}>
       <label htmlFor={name}>
         {required && <span css={{ color: "red" }}>*</span>} {label}
@@ -26,6 +24,7 @@ const InputField: React.FC<AllInputFieldProps> = (
         placeholder={placeholder}
         required={required}
         {...field}
+        value={field.value || ""}
         css={formStyles.field}
       />
       <p

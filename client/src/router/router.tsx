@@ -15,6 +15,14 @@ let router = createBrowserRouter([
   {
     path: "/login",
     Component: React.lazy(() => import("pages/login"))
+  },
+  {
+    path: "/add-song",
+    Component: React.lazy(() =>
+      import("pages/songForm").then(module => ({
+        default: () => <module.default title="" artist="" album="" genre="" />
+      }))
+    )
   }
 ]);
 

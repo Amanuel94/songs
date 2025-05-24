@@ -2,16 +2,16 @@
 
 import InputField from "../components/InputField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IFormInput } from "@types";
+import { IRegistrationFormInput } from "@types";
 import { formStyles } from "styles/form";
 import { color, font } from "styles";
 
 const RegisterForm = () => {
-  const { handleSubmit, control } = useForm<IFormInput>({
+  const { handleSubmit, control } = useForm<IRegistrationFormInput>({
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) =>
+  const onSubmit: SubmitHandler<IRegistrationFormInput> = (data: IRegistrationFormInput) =>
     console.log(data);
 
   return (
