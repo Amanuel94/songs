@@ -16,16 +16,16 @@ const App = () => {
   const imgs: string[] = ["./concert.jpg", "./lib.jpg", "./stat.jpg"];
 
   return (
-    <div>
-      <NavBar />
-      <Banner />
-      <div css={[cardContStyle.self, font.lubrifont]}>
-        {feats.map((feat, index) => (
-          <Card imgSrc={imgs[index]} caption={feat} key={index} />
-        ))}
+      <div>
+        <NavBar />
+        <Banner />
+        <div css={[cardContStyle.self, font.lubrifont]}>
+          {feats.map((feat, index) => (
+            <Card imgSrc={imgs[index]} caption={feat} key={index} />
+          ))}
+        </div>
+        <Footer />
       </div>
-      <Footer/>
-    </div>
   );
 };
 export default App;

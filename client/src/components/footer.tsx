@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
+import { font } from "styles";
+
 // import React from "react";
 
 const Footer = () => {
@@ -14,7 +16,7 @@ const Footer = () => {
 
       }}
     >
-      <p>© 2025 Amanuel Tewodros Getachew. All rights reserved.</p>
+      <p css={font.ancizarItalic}>© 2025 Amanuel Tewodros Getachew. All rights reserved.</p>
     </div>
   );
 };

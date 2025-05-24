@@ -13,3 +13,17 @@ export interface cardProp {
   imgSrc: string
   caption: string
 }
+
+ export interface IFormInput {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  }
+
+export interface InputFieldProp {
+  label: string;
+  type: string;
+  name: string;
+  placeholder?: string;
+  required?: boolean;
+}

@@ -75,6 +75,7 @@ export const NavBarStyle = {
     position: "absolute",
     marginLeft: "-10px",
     marginTop: "40px",
+    paddingTop: "10px",
     padding: "10px",
     paddingRight: "20px",
     backgroundColor: color.primaryLight,

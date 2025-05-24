@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <div css={NavBarStyle.self}>
       <div css={[font.lubrifont, NavBarStyle.logo]}>Matalog</div>
-      <ul css={[NavBarStyle.menubar, font.ancizar]}>
+      <ul css={[NavBarStyle.menubar, font.lubrifont]}>
         <li css={NavBarStyle.menuItem}>
           <a>Home</a>
         </li>
@@ -28,7 +28,7 @@ const NavBar = () => {
           <a>About</a>
         </li>
       </ul>
-      <div css={[NavBarStyle.profile, font.roboto]} onClick={() => setProfileMenu(!profileMenu)}>
+      <div css={[NavBarStyle.profile, font.lubrifont]} onClick={() => setProfileMenu(!profileMenu)}>
         <ul css={NavBarStyle.profileMenu} style={{ display: profileMenu ? "flex" : "none" }}>
           <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>Register <hr/></li>
           <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>Login</li>
