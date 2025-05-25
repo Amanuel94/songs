@@ -23,6 +23,10 @@ let router = createBrowserRouter([
         default: () => <module.default title="" artist="" album="" genre="" />
       }))
     )
+  },
+  {
+    path: "/dashboard",
+    Component: React.lazy(() => import("pages/dashboard"))
   }
 ]);
 

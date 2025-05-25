@@ -13,6 +13,8 @@ export const formStyles = {
         backgroundColor: "white",
         margin: "auto",
         padding: "1rem",
+        borderRadius: "20px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
        
     }),
 

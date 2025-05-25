@@ -49,3 +49,12 @@ export interface ISongFormInput extends IGenericFormInput{
   album: string;
   genre: string;
 }
+
+export interface SongData {
+  title: string;
+  artist: string;
+  album: string;
+  genre: string;
+  uploadedBy: string;
+  createdAt?: string;
+}
