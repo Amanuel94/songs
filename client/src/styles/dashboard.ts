@@ -59,7 +59,7 @@ export const songCardStyles = {
     alignItems: "left",
     width: "60%",
     marginLeft: "10px",
-    backgroundColor: "white",
+    backgroundColork: "white",
     border: "1px solid #ccc",
     marginBottom: "1rem",
     paddingLeft: "1rem",
@@ -222,3 +222,71 @@ export const songFilterStyles = {
   })
 
 };
+
+export const songStatStyles = {
+  topDivCont: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // alignItems: "center",
+    width: "100%",
+  }),
+  linChart: css({
+    backgroundColor: "white",
+    maxWidth: "60%",
+    border: "1px solid #ccc",
+    borderRadius: "10px",
+    padding: "1rem",
+    paddingLeft: "0rem",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.4)",
+  }),
+  counts: css({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "left",
+    fontSize: "2rem",
+    gap: "0.5rem",
+    paddingLeft: "0rem",
+  }),
+  count: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // fontSize: "1.2rem",
+    backgroundImage: color.gradient,
+    // border: "1px solid black",
+    gap: "0.5rem",
+    paddingLeft: "1rem",
+    borderRadius: "10px",
+    
+  }),
+
+  lowDivCont: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginTop: "5rem",
+    padding: "0 1rem",
+    gap: "2rem",
+  }),
+
+  pieChart: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    // width: "100%",
+    maxWidth: "35%",
+    backgroundColor: "white",
+    border: "1px solid #ccc",
+    borderRadius: "10px",
+    // padding: "1rem",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.4)",
+    maxHeight: "300px",
+    padding: "0rem",
+ 
+  }),
+  
+}

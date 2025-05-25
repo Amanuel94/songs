@@ -30,6 +30,10 @@ export const font = {
     fontWeight: 400,
     fontStyle: "italic",
   }),
+  mono: css({
+    fontFamily: '"Major Mono Display", monospace',
+    fontWeight: 400,
+  }),
 };
 
 export const NavBarStyle = {

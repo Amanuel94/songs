@@ -58,3 +58,28 @@ export interface SongData {
   uploadedBy: string;
   createdAt?: string;
 }
+
+export interface SongStat {
+  numberOfSongs: number;
+  numberOfSongsByGenre: {
+    key: string;
+    count: number;
+  }[];
+  numberOfSongsByArtist: {
+    key: string;
+    count: number;
+  }[];
+  numberOfSongsByAlbum: {
+    key: string;
+    count: number;
+  }[];
+  numberOfAlbumsByArtist: {
+    key: string;
+    count: number;
+  }[];
+  numberOfAlbumsByGenre: {
+    key: string;
+    count: number;
+  }[];
+  date: Date;
+} 

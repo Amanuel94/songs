@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import AllSongs from "components/allSongs";
 import Footer from "components/footer";
 // import MySongs from "components/mySongs";
+// import AllSongs from " components/allSongs";
+import SongStat from "components/songStat";
+
 import NavBar from "components/NavBar";
 import Stage from "components/Stage";
 import { font } from "styles";
@@ -35,7 +37,8 @@ const Dashboard = () => {
           </div>
           <Stage>
             {/* <MySongs /> */}
-            <AllSongs />
+            {/* <AllSongs /> */}
+            <SongStat />
           </Stage>
           {/* <div></div> */}
         </div>
