@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useAppSelector } from "hooks/stateHooks";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { font, NavBarStyle } from "styles";
 
 const NavBar = () => {
 
-
+  const authState = useAppSelector((state) => state.auth);
   const [profileMenu, setProfileMenu] = useState(false);
 
   return (
@@ -13,25 +15,64 @@ const NavBar = () => {
       <div css={[font.lubrifont, NavBarStyle.logo]}>Matalog</div>
       <ul css={[NavBarStyle.menubar, font.lubrifont]}>
         <li css={NavBarStyle.menuItem}>
-          <a>Home</a>
+          <Link to="/" css={{ textDecoration: "none" }}>
+            Home
+          </Link>
         </li>
         <li css={NavBarStyle.menuItem}>
-          <a>Browse</a>
+          <Link to="/dashboard" css={{ textDecoration: "none" }}>
+            Browse
+          </Link>
         </li>
         <li css={NavBarStyle.menuItem}>
-          <a>Register</a>
+          <Link to="/" css={{ textDecoration: "none" }}>
+            About
+          </Link>
         </li>
-        <li css={NavBarStyle.menuItem}>
-          <a>Login</a>
-        </li>
-        <li css={NavBarStyle.menuItem}>
-          <a>About</a>
-        </li>
+        {authState.isAuthenticated ? (
+          <>
+            <li css={NavBarStyle.menuItem}>
+              <Link to="/logout" css={{ textDecoration: "none" }}>
+                Logout
+              </Link>
+            </li>
+            <li css={NavBarStyle.menuItem}>
+              <Link to="/logout" css={[{ textDecoration: "none" }]}>
+                {authState.user.username}
+              </Link>
+            </li>
+          </>
+        ) : (
+          <>
+            <li css={NavBarStyle.menuItem}>
+              <Link to="/register" css={{ textDecoration: "none" }}>
+                Register
+              </Link>
+            </li>
+            <li css={NavBarStyle.menuItem}>
+              <Link to="/login" css={{ textDecoration: "none" }}>
+                Login
+              </Link>
+            </li>
+          </>
+        )}
       </ul>
-      <div css={[NavBarStyle.profile, font.lubrifont]} onClick={() => setProfileMenu(!profileMenu)}>
-        <ul css={NavBarStyle.profileMenu} style={{ display: profileMenu ? "flex" : "none" }}>
-          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>Register <hr/></li>
-          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>Login</li>
+      <div
+        css={[NavBarStyle.profile, font.lubrifont]}
+        onClick={() => setProfileMenu(!profileMenu)}
+      >
+        <ul
+          css={NavBarStyle.profileMenu}
+          style={{ display: profileMenu ? "flex" : "none" }}
+        >
+          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+            <Link to="/register"> Register </Link>
+
+            <hr />
+          </li>
+          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+            <Link to="/login"> Login </Link>
+          </li>
         </ul>
         <svg
           xmlns="http://www.w3.org/2000/svg"

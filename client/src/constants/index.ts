@@ -1,4 +1,5 @@
-// api url (where your server is hosted at)
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080'
 
-export { BACKEND_URL }
+const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+export { BASE_URL, NODE_ENV };

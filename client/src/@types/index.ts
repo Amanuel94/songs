@@ -1,31 +1,29 @@
 export interface Account {
-  username: string
-  password: string
-  role: 'user' | 'admin'
+  username: string;
+  password: string;
+  role: "user" | "admin";
 }
 
 export interface FormData {
-  username: Account['username']
-  password: Account['password']
+  username: Account["username"];
+  password: Account["password"];
 }
 
 export interface cardProp {
-  imgSrc: string
-  caption: string
+  imgSrc: string;
+  caption: string;
 }
 
-export interface IGenericFormInput {
+export interface IGenericFormInput {}
 
+export interface IFormInput extends IGenericFormInput {
+  username: string;
+  password: string;
 }
 
- export interface IFormInput extends IGenericFormInput {
-    username: string;
-    password: string;
-  }
-  
-  export interface IRegistrationFormInput extends IFormInput {
-    confirmPassword: string;
-  }
+export interface IRegistrationFormInput extends IFormInput {
+  confirmPassword: string;
+}
 
 export interface InputFieldProp {
   label: string;
@@ -43,7 +41,7 @@ export interface ISongFormProps {
   genre: string | undefined;
 }
 
-export interface ISongFormInput extends IGenericFormInput{
+export interface ISongFormInput extends IGenericFormInput {
   title: string;
   artist: string;
   album: string;
@@ -82,4 +80,51 @@ export interface SongStat {
     count: number;
   }[];
   date: Date;
-} 
+}
+
+export interface IRequestData {}
+
+export interface AuthReq extends IRequestData {
+  username: string;
+  password: string;
+}
+
+export enum APIFetchStatus {
+  IDLE = "idle",
+  PENDING = "pending",
+  SUCCESS = "success",
+  ERROR = "error",
+}
+
+export interface BaseActionType {
+  type: string;
+  payload?: any;
+}
+
+export interface BaseResponse {
+  status: number;
+}
+export interface AuthResponse extends BaseResponse {
+  data: {
+    id: string;
+    username: string;
+  } | undefined;
+  message: string | undefined;
+  accessToken: string | undefined;
+  refreshToken: string | undefined;
+}
+export interface AuthActionType extends BaseActionType {
+  payload: {
+    req: AuthReq;
+  };
+}
+
+
+// export interface RegisterResponse extends BaseResponse {
+//   data: {
+//     id: string;
+//     username: string;
+//   };
+//   accessToken: string;
+//   refreshToken: string;
+// }

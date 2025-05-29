@@ -1,31 +1,34 @@
 :root {
-    --primary-color: #b6dcf2;
-    --background-color : #ffffff;
-    --text-color: #000000;
-  }
-  
-  [data-theme="dark"] {
-    --primary-color: #bb86fc;
-    --background-color: #121212;
-    --text-color: #ffffff;
+  --primary-color: #b6dcf2;
+  --background-color: #ffffff;
+  --text-color: #000000;
+}
+
+[data-theme="dark"] {
+  --primary-color: #bb86fc;
+  --background-color: #121212;
+  --text-color: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+}
+
+input[type="submit"]:active {
+  box-shadow: inset 0 0 5px black;
+}
+
+/* rgba(255,0,0,0) */
+@keyframes scroll {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
   }
 
-  body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
+  to {
+    transform: translateY(0%);
+    opacity: 1;
   }
-
-  /* rgba(255,0,0,0) */
-  @keyframes scroll  {
-
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-  }
-
-    to {
-      transform: translateY(0%);
-      opacity: 1;
-    }
-  }
+}

@@ -2,17 +2,45 @@
 
 import InputField from "../components/InputField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IRegistrationFormInput } from "@types";
+import { APIFetchStatus, IRegistrationFormInput } from "@types";
 import { formStyles } from "styles/form";
 import { color, font } from "styles";
+import { authActions } from "features/authSlice";
+import { useAppDispatch, useAppSelector } from "hooks/stateHooks";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const RegisterForm = () => {
   const { handleSubmit, control } = useForm<IRegistrationFormInput>({
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<IRegistrationFormInput> = (data: IRegistrationFormInput) =>
-    console.log(data);
+  const dispatch = useAppDispatch();
+  const authState = useAppSelector((state) => state.auth);
+
+  useEffect(() => {}, [authState]);
+
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<IRegistrationFormInput> = (
+    data: IRegistrationFormInput
+  ) => {
+    const registerAction = authActions.register({
+      req: {
+        username: data.username,
+        password: data.password,
+      },
+    });
+    dispatch(registerAction);
+  };
+
+  if (authState.status === APIFetchStatus.SUCCESS) {
+    alert("Registration successful! You can now log in.");
+    navigate("/");
+  } else if (authState.status == APIFetchStatus.ERROR) {
+    alert(authState.error);
+    console.log("Error:", authState.error);
+ 
+  }
 
   return (
     <div

@@ -1,18 +1,5 @@
 import { useState, useEffect } from 'react'
 
-/*
-
-How to use this hook:
-import useLocalStorage from './hooks/useLocalStorage';
-
-function App() {
-  const [example, setExample] = useLocalStorage('example_key', { example: 'anything as default' });
-
-  return ();
-};
-
-*/
-
 const getLsVal = (key: string, defaultValue: any) => {
   const storedStr = localStorage.getItem(key) || ''
 
