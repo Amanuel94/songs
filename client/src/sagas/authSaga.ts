@@ -9,8 +9,11 @@ function* loginSaga(action: AuthActionType) {
     const response: AuthResponse = yield call(loginUser, username, password);
     if (response.status === 200) {
       yield put(authActions.loginSuccess(response.data));
-    } else {
+    } else if(response.status != 500) {
       yield put(authActions.loginFailure(response.data));
+    }
+    else {
+      yield put(authActions.loginFailure({ message: "Internal Server Error" }));
     }
   } catch (error) {
     const errorMessage =
@@ -40,8 +43,11 @@ function* registerSaga(action: AuthActionType) {
     console.log("Register response:", response);
     if (response.status === 201) {
       yield put(authActions.loginSuccess(response.data));
-    } else {
+    } else if (response.status !== 500) {
       yield put(authActions.loginFailure(response.data));
+    }
+    else {
+      yield put(authActions.loginFailure({ message: "Internal Server Error" }));
     }
   } catch (error) {
     const errorMessage =

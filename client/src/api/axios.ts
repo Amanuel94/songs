@@ -1,48 +1,62 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { BASE_URL } from "constants/index";
-// import useLocalStorage from "hooks/useLocalStorage";
 
 const header = {
-  "Content-Type": "application/json",
-  Accept: "application/json",
+  "content-type": "application/json",
+  accept: "application/json",
 };
 
-const client = axios.create({
-  baseURL: BASE_URL,
-  headers: header,
-});
+export class HttpClient {
+  private client: AxiosInstance;
 
-client.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    const { response } = error;
-    if (response) {
-      return Promise.resolve({
-        status: response.status,
-        data: response.data,
-      });
-    } else {
-      return Promise.resolve({
-        status: 500,
-        message: "Network Error",
-      });
+  constructor(token?: string) {
+    this.client = axios.create({
+      baseURL: BASE_URL,
+      headers: header,
+    });
+
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const { response } = error;
+        if (response) {
+          return Promise.resolve({
+            status: response.status,
+            data: response.data,
+          });
+        } else {
+          return Promise.resolve({
+            status: 500,
+            message: "Network Error",
+          });
+        }
+      }
+    );
+
+    if (token) {
+      this.setAuthToken(token);
     }
   }
-);
 
-// client.interceptors.request.use(
-//   (config: InternalAxiosRequestConfig) => {
-//     const token = useLocalStorage("token");
-//     if (token) {
-//       config.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+  setAuthToken(token: string) {
+    this.client.interceptors.request.use(
+      (config) => {
+        try {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        } catch (error) {
+          console.log(error);
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+  }
 
-export { client };
+  get instance() {
+    return this.client;
+  }
+}
+
+const client = new HttpClient();
+const instance = client.instance
+export { client, instance };

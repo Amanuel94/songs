@@ -9,6 +9,8 @@ export interface AuthState {
     id: string;
     username: string;
   };
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 const initialState: AuthState = {
@@ -19,6 +21,8 @@ const initialState: AuthState = {
     id: "",
     username: "",
   },
+  accessToken: undefined,
+  refreshToken: undefined,
 };
 
 export const authSlice: Slice = createSlice({
@@ -28,6 +32,9 @@ export const authSlice: Slice = createSlice({
     resetAllstate: (state) => {
       state.status = APIFetchStatus.IDLE;
       state.isAuthenticated = false;
+      state.error = null;
+      state.accessToken = undefined;
+      state.refreshToken = undefined;
       state.user = { ...initialState.user };
     },
     login: (state) => {
@@ -42,6 +49,8 @@ export const authSlice: Slice = createSlice({
       state.user.id = action.payload.data._id;
       state.error = null;
       state.user.username = action.payload.data.username;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
     },
     loginFailure: (state, action) => {
       state.status = APIFetchStatus.ERROR;
@@ -49,6 +58,8 @@ export const authSlice: Slice = createSlice({
       state.user.id = "";
       state.error = action.payload.message || "Login failed";
       state.user.username = "";
+      state.accessToken = undefined;
+      state.refreshToken = undefined;
     },
     logout: (state) => {
       state.status = APIFetchStatus.IDLE;
@@ -56,6 +67,8 @@ export const authSlice: Slice = createSlice({
       state.user.id = "";
       state.error = null;
       state.user.username = "";
+      state.accessToken = undefined;
+      state.refreshToken = undefined;
     },
     reset: (state) => {
       state.status = APIFetchStatus.IDLE;

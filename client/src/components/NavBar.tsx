@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { client } from "api/axios";
 import { useAppSelector } from "hooks/stateHooks";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,6 +9,7 @@ import { font, NavBarStyle } from "styles";
 const NavBar = () => {
 
   const authState = useAppSelector((state) => state.auth);
+  client.setAuthToken(authState.accessToken)
   const [profileMenu, setProfileMenu] = useState(false);
 
   return (

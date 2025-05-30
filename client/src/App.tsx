@@ -15,8 +15,7 @@ const App = () => {
     "Look at Our Stats",
   ];
   const dispatch = useAppDispatch();
-  dispatch(authActions.reset({}))
-    
+  dispatch(authActions.reset({}))    
   const imgs: string[] = ["./concert.jpg", "./lib.jpg", "./stat.jpg"];
 
   return (
