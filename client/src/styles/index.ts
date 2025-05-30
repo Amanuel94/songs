@@ -155,7 +155,7 @@ export const cardContStyle = {
     alignContent: "center",
     paddingRight: "2rem",
     paddingLeft: "2rem",
-    paddingBottom: "2rem",
+    paddingBottom: "2rem"
   }),
 
   card: css({
@@ -171,6 +171,7 @@ export const cardContStyle = {
     alignItems: "center",
     backgroundColor: "white",
     // boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    cursor: "pointer",
   }),
 
   img: css({

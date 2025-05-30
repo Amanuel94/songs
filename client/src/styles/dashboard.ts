@@ -36,11 +36,7 @@ export const dashboardStyles = {
     cursor: "pointer",
     border: "2px solid black",
     marginBottom: "-1px",
-    zIndex: 1,
-    "&:hover": {
-      borderBottom: "2px solid " + color.primary,
-      backgroundColor: color.primary,
-    },
+    zIndex: 1
   }),
 
   stage: css({
@@ -59,7 +55,7 @@ export const songCardStyles = {
     alignItems: "left",
     width: "60%",
     marginLeft: "10px",
-    backgroundColork: "white",
+    backgroundColor: "white",
     border: "1px solid #ccc",
     marginBottom: "1rem",
     paddingLeft: "1rem",
@@ -128,6 +124,9 @@ export const songCardStyles = {
 
     "&:hover": {
       backgroundColor: color.primary,
+    },
+    "&:active": {
+      boxShadow: "0 0 0 1px gray",
     },
   }),
 };

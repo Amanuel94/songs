@@ -1,16 +1,23 @@
 /** @jsxImportSource @emotion/react */
 
 import Footer from "components/footer";
-// import MySongs from "components/mySongs";
-// import AllSongs from " components/allSongs";
 import SongStat from "components/songStat";
 
 import NavBar from "components/NavBar";
 import Stage from "components/Stage";
-import { font } from "styles";
+import { color, font } from "styles";
 import { dashboardStyles } from "styles/dashboard";
+import { useState } from "react";
+import { css } from "@emotion/react";
+import MySongs from "components/mySongs";
+import AllSongs from "components/allSongs";
 
 const Dashboard = () => {
+  const [selectedBtn, setSelectedBtn] = useState(0);
+  const highlightBtnCss = css({
+    borderBottom: "2px solid " + color.primary,
+    backgroundColor: color.primary,
+  });
   return (
     <>
       <NavBar />
@@ -28,17 +35,33 @@ const Dashboard = () => {
               css={[
                 dashboardStyles.btn,
                 { borderRadius: "20px 0px 0px 0px" },
+                selectedBtn === 0 && highlightBtnCss,
               ]}
+              onClick={() => setSelectedBtn(0)}
             >
               My Songs
             </button>
-            <button css={[dashboardStyles.btn]}>All Songs</button>
-            <button css={[dashboardStyles.btn]}>Song Stats</button>
+            <button
+              css={[dashboardStyles.btn, selectedBtn === 1 && highlightBtnCss]}
+              onClick={() => setSelectedBtn(1)}
+            >
+              All Songs
+            </button>
+            <button
+              css={[dashboardStyles.btn, selectedBtn === 2 && highlightBtnCss]}
+              onClick={() => setSelectedBtn(2)}
+            >
+              Song Stats
+            </button>
           </div>
           <Stage>
-            {/* <MySongs /> */}
-            {/* <AllSongs /> */}
-            <SongStat />
+            {selectedBtn === 0 ? (
+              <MySongs />
+            ) : selectedBtn === 1 ? (
+              <AllSongs />
+            ) : (
+              <SongStat />
+            )}
           </Stage>
           {/* <div></div> */}
         </div>

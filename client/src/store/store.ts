@@ -3,6 +3,7 @@ import { authReducers } from "features/authSlice";
 import { rootSaga, sagaMiddleware } from "sagas/rootSaga";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { updateSongReducers } from "features/songSlice";
 const persistConfig = {
   key: "root",
   storage: storage,
@@ -10,6 +11,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth:authReducers,
+  updateSong: updateSongReducers
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

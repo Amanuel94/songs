@@ -17,6 +17,11 @@ const App = () => {
   const dispatch = useAppDispatch();
   dispatch(authActions.reset({}))    
   const imgs: string[] = ["./concert.jpg", "./lib.jpg", "./stat.jpg"];
+  const paths: string[] = [
+    "/register",
+    "/dashboard",
+    "/dashboard",
+  ];
 
   return (
       <div>
@@ -24,7 +29,7 @@ const App = () => {
         <Banner />
         <div css={[cardContStyle.self, font.lubrifont]}>
           {feats.map((feat, index) => (
-            <Card imgSrc={imgs[index]} caption={feat} key={index} />
+            <Card imgSrc={imgs[index]} caption={feat} key={index} link={paths[index]} />
           ))}
         </div>
         <Footer />

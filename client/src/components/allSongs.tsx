@@ -196,6 +196,7 @@ const allSongs = () => {
             genre={song.genre}
             uploadedBy={song.uploadedBy}
             createdAt={song.createdAt}
+            _id={song.id.toString()}
           />
         ))}
       </div>

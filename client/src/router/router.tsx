@@ -17,17 +17,17 @@ let router = createBrowserRouter([
     Component: React.lazy(() => import("pages/login"))
   },
   {
+    path: "/logout",
+    Component: React.lazy(() => import("pages/logout"))
+  },
+  {
     path: "/add-song",
-    Component: React.lazy(() =>
-      import("pages/songForm").then(module => ({
-        default: () => <module.default title="" artist="" album="" genre="" />
-      }))
-    )
+    Component: React.lazy(() => import("pages/songForm"))
   },
   {
     path: "/dashboard",
     Component: React.lazy(() => import("pages/dashboard"))
-  }
+  },
 ]);
 
 export default router;

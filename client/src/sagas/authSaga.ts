@@ -9,10 +9,9 @@ function* loginSaga(action: AuthActionType) {
     const response: AuthResponse = yield call(loginUser, username, password);
     if (response.status === 200) {
       yield put(authActions.loginSuccess(response.data));
-    } else if(response.status != 500) {
+    } else if (response.status != 500) {
       yield put(authActions.loginFailure(response.data));
-    }
-    else {
+    } else {
       yield put(authActions.loginFailure({ message: "Internal Server Error" }));
     }
   } catch (error) {
@@ -25,15 +24,7 @@ function* loginSaga(action: AuthActionType) {
 }
 
 function* logoutSaga() {
-  try {
-    yield put(authActions.logout({}));
-  } catch (error) {
-    const errorMessage =
-      error && typeof error === "object" && "message" in error
-        ? (error as { message: string }).message
-        : "Logout failed";
-    yield put(authActions.loginFailure({ message: errorMessage }));
-  }
+  yield put(authActions.logoutSuccess({}));
 }
 
 function* registerSaga(action: AuthActionType) {
@@ -45,8 +36,7 @@ function* registerSaga(action: AuthActionType) {
       yield put(authActions.loginSuccess(response.data));
     } else if (response.status !== 500) {
       yield put(authActions.loginFailure(response.data));
-    }
-    else {
+    } else {
       yield put(authActions.loginFailure({ message: "Internal Server Error" }));
     }
   } catch (error) {

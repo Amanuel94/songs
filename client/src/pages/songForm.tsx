@@ -1,18 +1,46 @@
 /** @jsxImportSource @emotion/react */
 
-import { ISongFormInput, ISongFormProps } from "@types";
+import { ISongFormInput } from "@types";
 import InputField from "components/InputField";
+import { updateSongActions } from "features/songSlice";
+import { useAppDispatch, useAppSelector } from "hooks/stateHooks";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { color, font } from "styles";
 import { formStyles } from "styles/form";
 
-const SongForm = (prop: ISongFormProps) => {
+const SongForm = () => {
   const { handleSubmit, control } = useForm<ISongFormInput>({
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<ISongFormInput> = (data: ISongFormInput) =>
-    console.log(data);
+  const authState = useAppSelector((state) => state.auth);
+  const songData = useAppSelector((state) => state.updateSong);
+  const dispatch = useAppDispatch();
+
+  if (!authState.isAuthenticated) {
+    return (
+      <div
+        css={{
+          width: "100%",
+          height: "100vh",
+          backgroundImage: color.gradient,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h1 css={[font.lubrifont, { color: "white" }]}>
+          Please log in to add or update songs.
+        </h1>
+      </div>
+    );
+  }
+
+  const onSubmit: SubmitHandler<ISongFormInput> = (data: ISongFormInput) => {
+
+    dispatch(updateSongActions.reset({})); 
+
+  };
 
   return (
     <div
@@ -23,15 +51,15 @@ const SongForm = (prop: ISongFormProps) => {
         paddingTop: "2rem",
       }}
     >
-      <div css={[formStyles.self, font.lubrifont ,{ height: "70vh" }]}>
-        <h1> {prop.title ? "Update" : "Add"} Song </h1>
+      <div css={[formStyles.self, font.lubrifont, { height: "70vh" }]}>
+        <h1> {songData.title ? "Update" : "Add"} Song </h1>
         <hr css={[formStyles.separator]} />
         <form css={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
           <InputField
             label="Title"
             type="text"
             name="title"
-            value={prop.title}
+            value={songData.title}
             control={control}
             rules={{
               required: "This field is required",
@@ -52,6 +80,7 @@ const SongForm = (prop: ISongFormProps) => {
             type="text"
             name="artist"
             control={control}
+            value={songData.artist}
             rules={{
               required: "This field is required",
               minLength: {
@@ -68,6 +97,7 @@ const SongForm = (prop: ISongFormProps) => {
             type="text"
             name="album"
             control={control}
+            value={songData.album}
             rules={{
               minLength: {
                 value: 3,
@@ -82,6 +112,7 @@ const SongForm = (prop: ISongFormProps) => {
             type="text"
             name="genre"
             control={control}
+            value={songData.genre}
             rules={{
               required: "This field is required",
               minLength: {
@@ -95,7 +126,7 @@ const SongForm = (prop: ISongFormProps) => {
 
           <input
             type="submit"
-            value={prop.title ? "Update Song" : "Add Song"}
+            value={songData.title ? "Update Song" : "Add Song"}
             css={[formStyles.btn, font.lubrifont, { width: "50%" }]}
           />
         </form>

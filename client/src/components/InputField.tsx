@@ -8,7 +8,7 @@ import { formStyles } from "styles/form";
 function InputField<T extends IGenericFormInput>(
     props: InputFieldProp & UseControllerProps<T>
 ) {
-    const { label, type, placeholder, required, name, ...controllerProps } = props;
+    const { label, type, placeholder, required, name, value, ...controllerProps } = props;
     const { field, fieldState } = useController({ name, ...controllerProps });
 
     return (
@@ -24,7 +24,7 @@ function InputField<T extends IGenericFormInput>(
         placeholder={placeholder}
         required={required}
         {...field}
-        value={field.value || ""}
+        value={value || ""}
         css={formStyles.field}
       />
       <p

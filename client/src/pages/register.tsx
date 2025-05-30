@@ -7,7 +7,7 @@ import { formStyles } from "styles/form";
 import { color, font } from "styles";
 import { authActions } from "features/authSlice";
 import { useAppDispatch, useAppSelector } from "hooks/stateHooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const RegisterForm = () => {
@@ -44,6 +44,7 @@ const RegisterForm = () => {
 
   return (
     <>
+
     {(authState.status === APIFetchStatus.PENDING) && (
       <div
         css={{
@@ -137,14 +138,20 @@ const RegisterForm = () => {
               ]}
             >
               {" "}
-              <a href="#">Aleady have an account</a> ?
+              <Link to="/login">Aleady have an account</Link> ?
             </p>
+          
 
             <input
               type="submit"
               value="Submit"
               css={[formStyles.btn, font.lubrifont]}
             />
+
+            <Link
+              to="/"
+              css={[ font.lubrifont, { marginLeft: "1rem" }]}
+              > &lt; Go Home  </Link>
           </form>
         </div>
       </div>

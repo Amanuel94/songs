@@ -64,17 +64,30 @@ const NavBar = () => {
         onClick={() => setProfileMenu(!profileMenu)}
       >
         <ul
-          css={NavBarStyle.profileMenu}
+          css={[NavBarStyle.profileMenu, {minWidth: "150px"}]}
           style={{ display: profileMenu ? "flex" : "none" }}
         >
-          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
-            <Link to="/register"> Register </Link>
-
-            <hr />
-          </li>
-          <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
-            <Link to="/login"> Login </Link>
-          </li>
+          {authState.isAuthenticated ? (
+            <>
+              <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+                <Link to="/logout">Logout</Link>
+                <hr />
+              </li>
+              <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+                <span>{authState.user.username}</span>
+              </li>
+            </>
+          ) : (
+            <>
+              <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+                <Link to="/register">Register</Link>
+                <hr />
+              </li>
+              <li css={[NavBarStyle.menuItem, NavBarStyle.profileMenuItem]}>
+                <Link to="/login">Login</Link>
+              </li>
+            </>
+          )}
         </ul>
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { IFormInput } from "@types";
 import { formStyles } from "styles/form";
 import { color, font } from "styles";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const { handleSubmit, control } = useForm<IFormInput>({
@@ -23,7 +24,7 @@ const LoginForm = () => {
         paddingTop: "2rem",
       }}
     >
-      <div css={[formStyles.self, font.lubrifont, {height: "60vh"}]}>
+      <div css={[formStyles.self, font.lubrifont, { height: "60vh" }]}>
         <h1> Log In </h1>
         <hr css={[formStyles.separator]} />
         <form css={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +75,7 @@ const LoginForm = () => {
             ]}
           >
             {" "}
-            <a href="#">New here? Create an account</a> ?
+            <Link to="/register">New here? Create an account</Link> ?
           </p>
 
           <input
@@ -82,6 +83,10 @@ const LoginForm = () => {
             value="Submit"
             css={[formStyles.btn, font.lubrifont]}
           />
+          <Link to="/" css={[font.lubrifont, { marginLeft: "1rem" }]}>
+            {" "}
+            &lt; Go Home{" "}
+          </Link>
         </form>
       </div>
     </div>

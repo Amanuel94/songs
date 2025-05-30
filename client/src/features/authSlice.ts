@@ -62,6 +62,9 @@ export const authSlice: Slice = createSlice({
       state.refreshToken = undefined;
     },
     logout: (state) => {
+      state.status = APIFetchStatus.PENDING;
+    },
+    logoutSuccess: (state) => {
       state.status = APIFetchStatus.IDLE;
       state.isAuthenticated = false;
       state.user.id = "";

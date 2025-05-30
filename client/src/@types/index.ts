@@ -12,6 +12,7 @@ export interface FormData {
 export interface cardProp {
   imgSrc: string;
   caption: string;
+  link?: string;  
 }
 
 export interface IGenericFormInput {}
@@ -35,6 +36,7 @@ export interface InputFieldProp {
 }
 
 export interface ISongFormProps {
+  id: string | undefined;
   title: string | undefined;
   artist: string | undefined;
   album: string | undefined;
@@ -49,6 +51,7 @@ export interface ISongFormInput extends IGenericFormInput {
 }
 
 export interface SongData {
+  _id: string;
   title: string;
   artist: string;
   album: string;

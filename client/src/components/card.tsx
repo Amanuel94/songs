@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { cardProp } from "@types";
+import { useNavigate } from "react-router-dom";
 import { cardContStyle } from "styles";
 
 const Card = (prop: cardProp) => {
+  const navigate = useNavigate();
   return (
     <div css={cardContStyle.card}>
       <div
@@ -19,6 +21,12 @@ const Card = (prop: cardProp) => {
             }
           },
         ]}
+
+      onClick={() => {
+        if (prop.link) {
+          navigate(prop.link);
+        }
+      }}
       >
       </div>
         <p css={cardContStyle.caption}>{prop.caption}</p>
