@@ -22,6 +22,7 @@ export class HttpClient {
         if (response) {
           return Promise.resolve({
             status: response.status,
+            message: response.data?.message || "An error occurred",
             data: response.data,
           });
         } else {
@@ -58,5 +59,5 @@ export class HttpClient {
 }
 
 const client = new HttpClient();
-const instance = client.instance
+const instance = client.instance;
 export { client, instance };

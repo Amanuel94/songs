@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { authActions } from "../features/authSlice";
-import { loginUser, registerUser } from "../api/api";
+import { loginUser, registerUser } from "../api/authApi";
 import { AuthActionType, AuthResponse } from "@types";
 
 function* loginSaga(action: AuthActionType) {
@@ -49,6 +49,7 @@ function* registerSaga(action: AuthActionType) {
 }
 
 export function* authWatcherSaga() {
+  console.log("Auth watcher saga started");
   yield all([
     takeLatest(authActions.login.type, loginSaga),
     takeLatest(authActions.logout.type, logoutSaga),

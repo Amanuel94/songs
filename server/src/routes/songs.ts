@@ -2,7 +2,7 @@ import express from "express";
 import checkBearerToken from "../middlewares/check-bearer-token";
 import errorHandler from "../middlewares/error-handler";
 import createSong from "../controllers/songs/create";
-import {getSongs, getSongById} from "../controllers/songs/get";
+import {getSongs, getSongById, mySongs} from "../controllers/songs/get";
 import updateSong from "../controllers/songs/update";
 import deleteSong from "../controllers/songs/delete";
 import searchSongs from "../controllers/songs/search";
@@ -17,6 +17,7 @@ router.get("/", [], getSongs, errorHandler);
 router.get("/:id", [], getSongById, errorHandler);
 router.put("/:id", [checkBearerToken], updateSong, errorHandler);
 router.delete("/:id", [checkBearerToken], deleteSong, errorHandler);
+router.post("/my-songs", [checkBearerToken], mySongs, errorHandler);
 router.post("/search", [], searchSongs, errorHandler);
 
 // Stat

@@ -9,6 +9,7 @@ import { authActions } from "features/authSlice";
 import { useAppDispatch, useAppSelector } from "hooks/stateHooks";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Loading from "components/Loading";
 
 const RegisterForm = () => {
   const { handleSubmit, control } = useForm<IRegistrationFormInput>({
@@ -39,31 +40,13 @@ const RegisterForm = () => {
   } else if (authState.status === APIFetchStatus.ERROR) {
     alert(authState.error);
     console.log("Error:", authState.error);
- 
   }
 
   return (
     <>
-
-    {(authState.status === APIFetchStatus.PENDING) && (
-      <div
-        css={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1000,
-          opacity: 0.8,
-          backgroundColor: "white",
-          height: "100%",
-          width: "100%",
-          textAlign: "center",
-          paddingTop: "50vh"
-        }}
-      >
-        <h2>Wait a second...</h2>
-      </div>
-    )}
+      {authState.status === APIFetchStatus.PENDING && (
+        <Loading/>
+      )}
       <div
         css={{
           width: "100%",
@@ -140,7 +123,6 @@ const RegisterForm = () => {
               {" "}
               <Link to="/login">Aleady have an account</Link> ?
             </p>
-          
 
             <input
               type="submit"
@@ -148,10 +130,10 @@ const RegisterForm = () => {
               css={[formStyles.btn, font.lubrifont]}
             />
 
-            <Link
-              to="/"
-              css={[ font.lubrifont, { marginLeft: "1rem" }]}
-              > &lt; Go Home  </Link>
+            <Link to="/" css={[font.lubrifont, { marginLeft: "1rem" }]}>
+              {" "}
+              &lt; Go Home{" "}
+            </Link>
           </form>
         </div>
       </div>

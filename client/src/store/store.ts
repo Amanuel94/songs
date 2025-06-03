@@ -1,9 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { authReducers } from "features/authSlice";
-import { rootSaga, sagaMiddleware } from "sagas/rootSaga";
+import {  sagaMiddleware } from "sagas/rootSaga";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { updateSongReducers } from "features/songSlice";
+import { updateSongReducers } from "features/updateSlice";
+import { songApiReducers } from "features/songApiSlice";
+import { authWatcherSaga } from "sagas/authSaga";
+import { songWatcherSaga } from "sagas/songSaga";
+import { pageNumberReducers } from "features/pageSlice";
+import { indicatorReducers } from "features/indicator";
 const persistConfig = {
   key: "root",
   storage: storage,
@@ -11,7 +16,10 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth:authReducers,
-  updateSong: updateSongReducers
+  updateSong: updateSongReducers,
+  songsApi: songApiReducers,
+  page: pageNumberReducers,
+  indicator: indicatorReducers,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -28,7 +36,10 @@ export const store = configureStore({
     }).concat(sagaMiddleware),
 });
 
-sagaMiddleware.run(rootSaga);
+// sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(authWatcherSaga);
+sagaMiddleware.run(songWatcherSaga);
+
 
 export type GlobalStore = typeof store;
 export type RootState = ReturnType<GlobalStore["getState"]>;

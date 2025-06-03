@@ -1,3 +1,5 @@
+import { UnknownAction } from "@reduxjs/toolkit";
+
 export interface Account {
   username: string;
   password: string;
@@ -12,7 +14,7 @@ export interface FormData {
 export interface cardProp {
   imgSrc: string;
   caption: string;
-  link?: string;  
+  link?: string;
 }
 
 export interface IGenericFormInput {}
@@ -41,6 +43,7 @@ export interface ISongFormProps {
   artist: string | undefined;
   album: string | undefined;
   genre: string | undefined;
+  uploadedBy: string | undefined;
 }
 
 export interface ISongFormInput extends IGenericFormInput {
@@ -56,7 +59,12 @@ export interface SongData {
   artist: string;
   album: string;
   genre: string;
-  uploadedBy: string;
+  uploadedBy:
+    | string
+    | {
+        id: string;
+        username: string;
+      };
   createdAt?: string;
 }
 
@@ -106,12 +114,15 @@ export interface BaseActionType {
 
 export interface BaseResponse {
   status: number;
+  data: any;
 }
 export interface AuthResponse extends BaseResponse {
-  data: {
-    id: string;
-    username: string;
-  } | undefined;
+  data:
+    | {
+        id: string;
+        username: string;
+      }
+    | undefined;
   message: string | undefined;
   accessToken: string | undefined;
   refreshToken: string | undefined;
@@ -122,12 +133,98 @@ export interface AuthActionType extends BaseActionType {
   };
 }
 
+export const SONG_API_ACTION_TYPE_STRINGS = {
+  Create: "songApi/create",
+  Update: "songApi/update",
+  Delete: "songApi/delete",
+  Fetch: "songApi/fetch",
+  FetchAll: "songApi/all",
+  FetchSearch: "songApi/fetchSearch",
+  FetchMySongs: "songApi/fetchMySongs",
+} as const;
 
-// export interface RegisterResponse extends BaseResponse {
-//   data: {
-//     id: string;
-//     username: string;
-//   };
-//   accessToken: string;
-//   refreshToken: string;
-// }
+export interface UpsertSongActionType extends UnknownAction {
+  type:
+    | typeof SONG_API_ACTION_TYPE_STRINGS.Update
+    | typeof SONG_API_ACTION_TYPE_STRINGS.Create;
+  payload: {
+    req: ISongFormInput & { id?: string };
+  };
+}
+export interface DeleteSongActionType extends UnknownAction {
+  type: typeof SONG_API_ACTION_TYPE_STRINGS.Delete;
+  payload: {
+    req: {
+      id: string;
+    };
+  };
+}
+export interface FetchSongActionType extends UnknownAction {
+  type: typeof SONG_API_ACTION_TYPE_STRINGS.Fetch;
+  payload: {
+    id: string;
+  };
+}
+export interface SearchQuery {
+  query: string;
+  page: number;
+  limit: number;
+  sortBy?: string;
+  uploadedBy?: string;
+  asc?: "t" | "f";
+  on: string;
+}
+export interface FetchSongsActionType extends UnknownAction {
+  type: typeof SONG_API_ACTION_TYPE_STRINGS.FetchAll;
+  payload: {
+    req: SearchQuery;
+  };
+}
+
+export interface FetchMySongsActionType extends UnknownAction {
+  type: typeof SONG_API_ACTION_TYPE_STRINGS.FetchMySongs;
+  payload: {
+    req: {
+      page: number;
+      limit: number;
+    };
+  };
+}
+
+export interface UpsertSongResponse extends BaseResponse {
+  data: SongData | undefined;
+  message: string | undefined;
+}
+
+export interface DeleteSongResponse extends BaseResponse {
+  data: SongData | undefined;
+  message: string | undefined;
+}
+export interface FetchSongResponse extends BaseResponse {
+  data: SongData | undefined;
+  message: string | undefined;
+}
+export interface FetchSongsResponse extends BaseResponse {
+  data: {
+    songs: SongData[];
+  };
+  total: number;
+  message: string | undefined;
+}
+
+export interface FetchMySongsResponse extends BaseResponse {
+  data: {
+    songs: SongData[];
+    pages: number;
+  };
+  total: number;
+  message: string | undefined;
+}
+
+export interface FetchSearchResults extends BaseResponse {
+  data: {
+    songs: SongData[];
+  };
+  total: number;
+  message: string | undefined;
+}

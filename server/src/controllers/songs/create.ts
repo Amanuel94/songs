@@ -8,7 +8,7 @@ const createSong: RequestHandler = async (req, res, next) => {
     const validationError = await joi.validate(
       {
         title: joi.instance.string().required().min(3).max(20),
-        artist: joi.instance.string().required().min(8).max(30),
+        artist: joi.instance.string().required().min(3).max(30),
         genre: joi.instance.string().required().min(3).max(20),
         album: joi.instance.string().optional(),
       },

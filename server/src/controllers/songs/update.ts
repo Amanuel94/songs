@@ -13,7 +13,7 @@ const updateSong: RequestHandler = async (req, res, next) => {
     const validationError = await joi.validate(
       {
         title: joi.instance.string().required().min(3).max(20),
-        artist: joi.instance.string().required().min(8).max(20),
+        artist: joi.instance.string().required().min(3).max(20),
         genre: joi.instance.string().required().min(3).max(20),
         album: joi.instance.string().optional(),
       },
@@ -71,7 +71,7 @@ const updateSong: RequestHandler = async (req, res, next) => {
     await updateSongStat(song, 1);
 
     const { _id, ...data } = song.toObject();
-    res.status(201).json({
+    res.status(200).json({
       message: "Succesfully updated  song",
       data: {
         ...data,

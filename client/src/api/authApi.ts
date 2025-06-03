@@ -1,10 +1,7 @@
 import { AuthReq } from "@types";
 import { instance } from "./axios";
-import type { AxiosResponse } from "axios";
+import { r } from "utils/utils";
 
-const r = (res: AxiosResponse<any, any>) => {
-  return { status: res.status, data: res.data};
-};
 
 export const registerUser = async (username: string, password: string) => {
   const body: AuthReq = {

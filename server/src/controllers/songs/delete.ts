@@ -45,7 +45,7 @@ const deleteSong: RequestHandler = async (req, res, next) => {
     await updateSongStat(song, -1);
 
     const { _id, ...data } = song.toObject();
-    res.status(201).json({
+    res.status(200).json({
       message: "Succesfully removed song",
       data: {
         ...data,

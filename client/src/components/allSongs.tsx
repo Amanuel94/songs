@@ -3,8 +3,16 @@
 import { songFilterStyles } from "styles/dashboard";
 import SongCard from "./songCard";
 import { font } from "styles";
+import { useEffect } from "react";
+import { APIFetchStatus, SONG_API_ACTION_TYPE_STRINGS, SongData } from "@types";
+import { UnknownAction } from "@reduxjs/toolkit";
+import { songApiActions, SongApiState } from "features/songApiSlice";
+import { useAppSelector, useAppDispatch } from "hooks/stateHooks";
+import { pageNumberActions } from "features/pageSlice";
+import { LIMIT } from "../constants";
+import Loading from "./Loading";
 
-const allSongs = () => {
+const AllSongs = () => {
   const filterOn = [
     { value: "title", label: "Title" },
     { value: "artist", label: "Artist" },
@@ -21,192 +29,182 @@ const allSongs = () => {
     { value: "updatedAt", label: "Last Modified" },
   ];
 
-  const songs = [
-    {
-      id: 1,
-      title: "Song One",
-      artist: "Artist A",
-      album: "Album X",
-      genre: "Pop",
-      uploadedBy: "User1",
-      createdAt: "2024-06-01T10:15:00",
-      updatedAt: "2024-06-05T14:30:00",
-    },
-    {
-      id: 2,
-      title: "Song Two",
-      artist: "Artist B",
-      album: "Album Y",
-      genre: "Rock",
-      uploadedBy: "User2",
-      createdAt: "2024-05-15T09:00:00",
-      updatedAt: "2024-06-03T16:45:00",
-    },
-    {
-      id: 3,
-      title: "Song Three",
-      artist: "Artist A",
-      album: "Album Z",
-      genre: "Jazz",
-      uploadedBy: "User3",
-      createdAt: "2024-04-20T13:20:00",
-      updatedAt: "2024-05-22T11:10:00",
-    },
-    {
-      id: 4,
-      title: "Song Four",
-      artist: "Artist C",
-      album: "Album X",
-      genre: "Hip-Hop",
-      uploadedBy: "User4",
-      createdAt: "2024-03-10T08:40:00",
-      updatedAt: "2024-04-01T17:25:00",
-    },
-    {
-      id: 5,
-      title: "Song Five",
-      artist: "Artist D",
-      album: "Album Y",
-      genre: "Classical",
-      uploadedBy: "User5",
-      createdAt: "2024-02-18T19:55:00",
-      updatedAt: "2024-03-20T21:00:00",
-    },
-    {
-      id: 6,
-      title: "Song Six",
-      artist: "Artist E",
-      album: "Album W",
-      genre: "Electronic",
-      uploadedBy: "User1",
-      createdAt: "2024-01-25T07:30:00",
-      updatedAt: "2024-02-15T12:15:00",
-    },
-    {
-      id: 7,
-      title: "Song Seven",
-      artist: "Artist F",
-      album: "Album V",
-      genre: "Country",
-      uploadedBy: "User2",
-      createdAt: "2023-12-30T15:10:00",
-      updatedAt: "2024-01-10T18:20:00",
-    },
-    {
-      id: 8,
-      title: "Song Eight",
-      artist: "Artist G",
-      album: "Album U",
-      genre: "Reggae",
-      uploadedBy: "User3",
-      createdAt: "2023-11-12T22:05:00",
-      updatedAt: "2023-12-01T23:30:00",
-    },
-    {
-      id: 9,
-      title: "Song Nine",
-      artist: "Artist H",
-      album: "Album T",
-      genre: "Blues",
-      uploadedBy: "User4",
-      createdAt: "2023-10-05T06:45:00",
-      updatedAt: "2023-11-10T10:50:00",
-    },
-    {
-      id: 10,
-      title: "Song Ten",
-      artist: "Artist I",
-      album: "Album S",
-      genre: "Folk",
-      uploadedBy: "User5",
-      createdAt: "2023-09-15T20:00:00",
-      updatedAt: "2023-10-01T21:15:00",
-    },
-  ];
+  const dispatch = useAppDispatch();
+  const pageNumber = useAppSelector((state) => state.page);
+  const songData: SongApiState<{ songs: SongData[]; pages: number }> =
+    useAppSelector((state) => state.songsApi);
+  // const [render, setReneder] = useState(1);
 
-  const fetchSongs = () => {
-    console.log({
-        filterOn: (document.getElementById("filteron") as HTMLSelectElement | null)?.value,
-        sortBy: (document.getElementById("sortby") as HTMLSelectElement | null)?.value,
-        sortOrder: (document.getElementById("sortorder") as HTMLSelectElement | null)?.value,
-        searchQuery: (document.querySelector("input[type='text']") as HTMLInputElement | null)?.value,
-    })
+  let songs: SongData[] = [];
+
+  useEffect(() => {
+    dispatch(pageNumberActions.setPage(1));
+  }, []);
+
+  useEffect(() => {
+    const action: UnknownAction = {
+      type: SONG_API_ACTION_TYPE_STRINGS.FetchAll,
+      payload: {
+        req: {
+          page: pageNumber.value,
+          limit: LIMIT,
+        },
+      },
+    };
+    console.log("Dispatching action:", action);
+    dispatch(songApiActions.pending({}));
+    dispatch(action);
+  }, [pageNumber.value]);
+
+  useEffect(() => {
+    if (songData.status === APIFetchStatus.SUCCESS) {
+      dispatch(songApiActions.reset({}));
+    } else if (songData.status === APIFetchStatus.ERROR) {
+      alert(`Error fetching songs: ${songData.error}`);
+      dispatch(songApiActions.reset({}));
+    }
+  }, [songData.status]);
+
+  songs = songData.data?.songs ? [...songData.data?.songs] : [];
+  const numberOfPages = songData.data?.pages || 0;
+
+ const fetchSongs = () => {
+    dispatch(pageNumberActions.setPage(1));
+    const queryParams = {
+      query: document.querySelector("input[type='text']")
+        ? (document.querySelector("input[type='text']") as HTMLInputElement)
+            .value
+        : "",
+      on: (document.getElementById("filteron") as HTMLSelectElement | null)
+        ?.value,
+      sortBy: (document.getElementById("sortby") as HTMLSelectElement | null)
+        ?.value,
+      asc: (document.getElementById("sortorder") as HTMLSelectElement | null)
+        ?.value,
+      page: pageNumber.value,
+      limit: LIMIT,
+    };
+    const action: UnknownAction = {
+      type: SONG_API_ACTION_TYPE_STRINGS.FetchSearch,
+      payload: {
+        req: queryParams,
+      },
+    };
+    console.log("Dispatching action:", action);
+    dispatch(songApiActions.pending({}));
+    dispatch(action);
   }
 
   return (
-    <div>
-      <h2> All Songs </h2>
-      <div css={[songFilterStyles.self, font.lubrifont]}>
-        <input css={songFilterStyles.input} type="text" />
-        <div css={songFilterStyles.selectContainer}>
-          <label htmlFor="filteron" css={songFilterStyles.selectLabel}>
-            {" "}
-            Filter On{" "}
-          </label>
-          <select css={songFilterStyles.select} name="filteron" id="filteron">
-            <option value="" disabled selected>
-              Filter On
-            </option>
-            {filterOn.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div css={songFilterStyles.selectContainer}>
-          <label htmlFor="sortby" css={songFilterStyles.selectLabel}>
-            {" "}
-            Sort By{" "}
-          </label>
-          <select css={songFilterStyles.select} name="sortby" id="sortby">
-            <option value="" disabled selected>
-              Sort By
-            </option>
-            {sortBy.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div css={songFilterStyles.selectContainer}>
-          <label htmlFor="sortorder" css={songFilterStyles.selectLabel}>
-            {" "}
-            Order{" "}
-          </label>
-          <select css={songFilterStyles.select} name="sortorder" id="sortorder">
-            <option value="t">Ascending</option>
-            <option value="f">Descending</option>
-          </select>
-        </div>
-        <button css={songFilterStyles.btn} onClick={fetchSongs}>Filter</button>
-      </div>
-      <div css={songFilterStyles.results}>
-        {" "}
-        Showing 1- 10 out of 50 results{" "}
-      </div>
+    <>
+      {songData.status === APIFetchStatus.PENDING && <Loading />}
       <div>
-        {songs.map((song, index) => (
-          <SongCard
-            key={index}
-            title={song.title}
-            artist={song.artist}
-            album={song.album}
-            genre={song.genre}
-            uploadedBy={song.uploadedBy}
-            createdAt={song.createdAt}
-            _id={song.id.toString()}
-          />
-        ))}
+        <h2> All Songs </h2>
+        <div css={[songFilterStyles.self, font.lubrifont]}>
+          <input css={songFilterStyles.input} type="text" />
+          <div css={songFilterStyles.selectContainer}>
+            <label htmlFor="filteron" css={songFilterStyles.selectLabel}>
+              {" "}
+              Filter On{" "}
+            </label>
+            <select css={songFilterStyles.select} name="filteron" id="filteron">
+              <option value="" disabled selected>
+                Filter On
+              </option>
+              {filterOn.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div css={songFilterStyles.selectContainer}>
+            <label htmlFor="sortby" css={songFilterStyles.selectLabel}>
+              {" "}
+              Sort By{" "}
+            </label>
+            <select css={songFilterStyles.select} name="sortby" id="sortby">
+              <option value="" disabled selected>
+                Sort By
+              </option>
+              {sortBy.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div css={songFilterStyles.selectContainer}>
+            <label htmlFor="sortorder" css={songFilterStyles.selectLabel}>
+              {" "}
+              Order{" "}
+            </label>
+            <select
+              css={songFilterStyles.select}
+              name="sortorder"
+              id="sortorder"
+            >
+              <option value="t">Ascending</option>
+              <option value="f">Descending</option>
+            </select>
+          </div>
+          <button css={songFilterStyles.btn} onClick={fetchSongs}>
+            Filter
+          </button>
+        </div>
+        <div css={songFilterStyles.results}>
+          {" "}
+          Showing results {(pageNumber.value - 1) * LIMIT + 1} -{" "}
+          {(pageNumber.value - 1) * LIMIT + 1 + songs.length - 1}{" "}
+        </div>
+        <div>
+          {songs.map((song, index) => (
+            <SongCard
+              key={index}
+              title={song.title}
+              artist={song.artist}
+              album={song.album}
+              genre={song.genre}
+              uploadedBy={
+                typeof song.uploadedBy === "string"
+                  ? song.uploadedBy
+                  : song.uploadedBy.username
+              }
+              createdAt={song.createdAt}
+              _id={song._id.toString()}
+            />
+          ))}
+        </div>
+        <div css={songFilterStyles.pagination}>
+          <button
+            css={songFilterStyles.pageBtn}
+            onClick={() => {
+              if (pageNumber.value > 1) {
+                dispatch(pageNumberActions.decrement({}));
+              }
+            }}
+            disabled={pageNumber <= 1}
+          >
+            &lt;
+          </button>
+          <span>
+            Page {pageNumber.value} of {Math.max(numberOfPages, 1)}
+          </span>
+          <button
+            css={songFilterStyles.pageBtn}
+            onClick={() => {
+              if (pageNumber.value < numberOfPages) {
+                dispatch(pageNumberActions.increment({}));
+              }
+            }}
+            disabled={pageNumber >= numberOfPages}
+          >
+            &gt;
+          </button>
+        </div>
       </div>
-      <div css={songFilterStyles.pagination}>
-        <button css={songFilterStyles.pageBtn}>&lt;</button>
-        <span>Page 1 of 5</span>
-        <button css={songFilterStyles.pageBtn}>&gt;</button>
-      </div>
-    </div>
+    </>
   );
 };
 
-export default allSongs;
+export default AllSongs;

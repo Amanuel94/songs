@@ -5,6 +5,7 @@ import Card from "components/card";
 import Footer from "components/footer";
 import NavBar from "components/NavBar";
 import { authActions } from "features/authSlice";
+import { songApiActions } from "features/songApiSlice";
 import { useAppDispatch } from "hooks/stateHooks";
 import { font, cardContStyle } from "styles";
 
@@ -22,6 +23,8 @@ const App = () => {
     "/dashboard",
     "/dashboard",
   ];
+
+  dispatch(songApiActions.reset({}));
 
   return (
       <div>

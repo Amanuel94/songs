@@ -1,4 +1,10 @@
 import { SongStat } from "@types";
+import { AxiosResponse } from "axios";
+// import { Action } from "redux-saga";
+export const r = (res: AxiosResponse<any, any>) => {
+  return { status: res.status, data: res.data};
+};
+
 
 export const ToDateFormat = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -30,24 +36,46 @@ export const artistDistribution = (
   albumArtistdata: { key: string; count: number }[],
   songArtistdata: { key: string; count: number }[]
 ) => {
-  let artistsChartData: { name: string; albumCount: number, songCount:number }[] = [];
+  let artistsChartData: {
+    name: string;
+    albumCount: number;
+    songCount: number;
+  }[] = [];
   albumArtistdata.forEach((item) => {
-    const existingCount = artistsChartData.find((a) => a.name === item.count + "");
+    const existingCount = artistsChartData.find(
+      (a) => a.name === item.count + ""
+    );
     if (existingCount) {
       existingCount.albumCount += 1;
     } else {
-        artistsChartData.push({ name: item.count+"", albumCount: 1, songCount: 0 });
+      artistsChartData.push({
+        name: item.count + "",
+        albumCount: 1,
+        songCount: 0,
+      });
     }
   });
   songArtistdata.forEach((item) => {
-    const existingCount = artistsChartData.find((a) => a.name === item.count+"");
+    const existingCount = artistsChartData.find(
+      (a) => a.name === item.count + ""
+    );
     if (existingCount) {
       existingCount.songCount += 1;
     } else {
-      artistsChartData.push({ name: item.count+"", songCount: 1, albumCount: 0 });
+      artistsChartData.push({
+        name: item.count + "",
+        songCount: 1,
+        albumCount: 0,
+      });
     }
   });
-  return artistsChartData.sort(
-      (a, b) => b.albumCount - a.albumCount
-    )
-}
+  return artistsChartData.sort((a, b) => b.albumCount - a.albumCount);
+};
+
+// export const CreateAction = (payload: any, type: string) => {
+//   const action: Action = {
+//     type: type,
+//   };
+
+
+// };

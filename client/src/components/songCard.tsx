@@ -31,7 +31,7 @@ const songCard = (prop: SongData) => {
         </li>
         <li css={songCardStyles.listItem}>
           <img src="userb.svg" alt="Uploaded By" css={songCardStyles.icon} />
-          <span css={songCardStyles.micro}>{prop.uploadedBy}</span>
+          <span css={songCardStyles.micro}>{prop.uploadedBy as string}</span>
         </li>
         <li css={songCardStyles.listItem}>
           <img src="dateb.svg" alt="Date" css={songCardStyles.icon} />
