@@ -2,19 +2,44 @@
 
 import InputField from "../components/InputField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IFormInput } from "@types";
+import { APIFetchStatus, IFormInput } from "@types";
 import { formStyles } from "styles/form";
 import { color, font } from "styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "hooks/stateHooks";
+import { useEffect } from "react";
+import { authActions } from "features/authSlice";
 
 const LoginForm = () => {
   const { handleSubmit, control } = useForm<IFormInput>({
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) =>
-    console.log(data);
+  const dispatch = useAppDispatch();
+  const authState = useAppSelector((state) => state.auth);
 
+  useEffect(() => {}, [authState]);
+
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<IFormInput> = (
+    data: IFormInput
+  ) => {
+    const registerAction = authActions.login({
+      req: {
+        username: data.username,
+        password: data.password,
+      },
+    });
+    dispatch(registerAction);
+  };
+
+  if (authState.status === APIFetchStatus.SUCCESS) {
+    alert("Login successful!");
+    navigate("/");
+  } else if (authState.status === APIFetchStatus.ERROR) {
+    alert(authState.error);
+    console.log("Error:", authState.error);
+  }
   return (
     <div
       css={{

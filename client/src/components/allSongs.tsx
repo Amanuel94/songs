@@ -33,12 +33,12 @@ const AllSongs = () => {
   const pageNumber = useAppSelector((state) => state.page);
   const songData: SongApiState<{ songs: SongData[]; pages: number }> =
     useAppSelector((state) => state.songsApi);
-  // const [render, setReneder] = useState(1);
 
-  let songs: SongData[] = [];
+  let songs: SongData[] = []
 
   useEffect(() => {
     dispatch(pageNumberActions.setPage(1));
+    dispatch(songApiActions.clear({}));
   }, []);
 
   useEffect(() => {
@@ -154,8 +154,9 @@ const AllSongs = () => {
         </div>
         <div css={songFilterStyles.results}>
           {" "}
-          Showing results {(pageNumber.value - 1) * LIMIT + 1} -{" "}
-          {(pageNumber.value - 1) * LIMIT + 1 + songs.length - 1}{" "}
+            {songs.length > 0
+            ? `Showing results ${(pageNumber.value - 1) * LIMIT + 1} - ${(pageNumber.value - 1) * LIMIT + songs.length}`
+            : "No results found"}
         </div>
         <div>
           {songs.map((song, index) => (

@@ -14,6 +14,13 @@ import { songApiActions, SongApiState } from "features/songApiSlice";
 import Loading from "./Loading";
 
 const MySongs = () => {
+
+  useEffect(() => {
+    dispatch(pageNumberActions.setPage(1));
+    dispatch(songApiActions.clear({}));
+  }
+  , []);
+
   const pageNumber = useAppSelector((state) => state.page);
   const authState = useAppSelector((state) => state.auth);
   const indicator = useAppSelector((state) => state.indicator);

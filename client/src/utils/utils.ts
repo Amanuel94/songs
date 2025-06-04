@@ -2,9 +2,8 @@ import { SongStat } from "@types";
 import { AxiosResponse } from "axios";
 // import { Action } from "redux-saga";
 export const r = (res: AxiosResponse<any, any>) => {
-  return { status: res.status, data: res.data};
+  return { status: res.status, data: res.data };
 };
-
 
 export const ToDateFormat = (date: string) => {
   const options: Intl.DateTimeFormatOptions = {
@@ -16,7 +15,7 @@ export const ToDateFormat = (date: string) => {
 };
 export const ToLineChartData = (data: SongStat) => {
   return {
-    name: ToDateFormat(data.date.toISOString().split("T")[0]),
+    name: ToDateFormat(new Date(data.date).toISOString().split("T")[0]),
     uv: data.numberOfSongs,
   };
 };
@@ -45,6 +44,7 @@ export const artistDistribution = (
     const existingCount = artistsChartData.find(
       (a) => a.name === item.count + ""
     );
+    if (item.count === 0 || item.count === undefined) return; // Skip if count is 0
     if (existingCount) {
       existingCount.albumCount += 1;
     } else {
@@ -59,6 +59,7 @@ export const artistDistribution = (
     const existingCount = artistsChartData.find(
       (a) => a.name === item.count + ""
     );
+    if (item.count === 0 || item.count === undefined) return; // Skip if count is 0
     if (existingCount) {
       existingCount.songCount += 1;
     } else {
@@ -72,10 +73,40 @@ export const artistDistribution = (
   return artistsChartData.sort((a, b) => b.albumCount - a.albumCount);
 };
 
-// export const CreateAction = (payload: any, type: string) => {
-//   const action: Action = {
-//     type: type,
-//   };
+export const prepareSongStatData = (data: SongStat[], startDate: Date, endDate:Date) => {
 
+  data = data.filter(
+    (stat) =>
+      new Date(stat.date) >= startDate && new Date(stat.date) <= endDate
+  );
 
-// };
+  console.log("Filtered Data:", data);
+  if (data.length === 0) {
+    return {
+      lineChartData: [],
+      latestData: null,
+      latestDate: new Date(),
+      genreSongChartData: [],
+      genreAlbumChartData: [],
+      artistChartData: [],
+    };
+  }
+
+  let lineChartData = data.map((stat) => ToLineChartData(stat));
+  let latestData = data[data.length - 1];
+  let latestDate = latestData ? latestData.date : new Date();
+  let genreSongChartData = genreDistribution(latestData.numberOfSongsByGenre);
+  let genreAlbumChartData = genreDistribution(latestData.numberOfAlbumsByGenre);
+  let artistChartData = artistDistribution(
+    latestData.numberOfAlbumsByArtist,
+    latestData.numberOfSongsByArtist
+  );
+  return {
+    lineChartData,
+    latestData,
+    latestDate,
+    genreSongChartData,
+    genreAlbumChartData,
+    artistChartData,
+  };
+};

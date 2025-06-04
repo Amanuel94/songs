@@ -49,7 +49,6 @@ function* registerSaga(action: AuthActionType) {
 }
 
 export function* authWatcherSaga() {
-  console.log("Auth watcher saga started");
   yield all([
     takeLatest(authActions.login.type, loginSaga),
     takeLatest(authActions.logout.type, logoutSaga),

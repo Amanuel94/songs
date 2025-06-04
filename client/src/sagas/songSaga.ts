@@ -7,6 +7,8 @@ import {
   FetchSongResponse,
   FetchSongsActionType,
   FetchSongsResponse,
+  FetchSongStatsActionType,
+  FetchSongStatsResponse,
   SONG_API_ACTION_TYPE_STRINGS,
   UpsertSongActionType,
   UpsertSongResponse,
@@ -16,13 +18,15 @@ import {
   createSong,
   deleteSong,
   getSongById,
+  getSongStats,
   mySongs,
   searchSongs,
   updateSong,
 } from "../api/songApi";
 import { songApiActions } from "features/songApiSlice";
 import { indicator } from "features/indicator";
-import {allSongs} from "../api/songApi";
+import { allSongs } from "../api/songApi";
+import { songStatApiActions } from "features/songStatSlice";
 
 function* createSongSaga(action: UpsertSongActionType) {
   console.log("Creating song with request:", action.payload.req);
@@ -34,9 +38,7 @@ function* createSongSaga(action: UpsertSongActionType) {
     if (response.status === 201) {
       yield put(songApiActions.success({}));
     } else {
-      yield put(
-        songApiActions.error(response.data)
-      );
+      yield put(songApiActions.error(response.data));
     }
   } catch (error) {
     const errorMessage =
@@ -73,8 +75,8 @@ function* updateSongSaga(action: UpsertSongActionType) {
         ? (error as { message: string }).message
         : "Failed to update song";
     songApiActions.error({
-      error:errorMessage
-    })
+      error: errorMessage,
+    });
   }
 }
 
@@ -87,7 +89,7 @@ function* deleteSongSaga(action: DeleteSongActionType) {
     console.log("Delete song response:", response);
     if (response.status === 200) {
       yield put(songApiActions.success({}));
-      yield put(indicator.toggle({}))
+      yield put(indicator.toggle({}));
     } else {
       yield put(
         songApiActions.error({
@@ -139,9 +141,7 @@ function* searchSongsSaga(action: FetchSongsActionType) {
       yield put(songApiActions.success(response.data));
     } else {
       console.log("Search songs response:", response);
-      yield put(
-        songApiActions.error(response.data)
-      );
+      yield put(songApiActions.error(response.data));
     }
   } catch (error) {
     const errorMessage =
@@ -189,9 +189,7 @@ function* getMySongs(action: FetchMySongsActionType) {
       yield put(songApiActions.success(response.data));
     } else {
       yield put(
-        songApiActions.error({
-          error: response.message || "Failed to fetch my songs",
-        })
+        songApiActions.error(response.data)
       );
     }
   } catch (error) {
@@ -201,6 +199,29 @@ function* getMySongs(action: FetchMySongsActionType) {
         : "Failed to fetch my songs";
     console.error("Fetch my songs failed:", errorMessage);
     yield put(songApiActions.error({ error: errorMessage }));
+  }
+}
+
+export function* getSongStatsSaga(action: FetchSongStatsActionType) {
+  try {
+    const response: FetchSongStatsResponse = yield call(
+      getSongStats,
+      action.payload.req.startDate,
+      action.payload.req.endDate
+    );
+
+    if (response.status === 200) {
+      yield put(songStatApiActions.success(response.data));
+    } else {
+      yield put(songStatApiActions.error(response.data));
+    }
+  } catch (error) {
+    const errorMessage =
+      error && typeof error === "object" && "message" in error
+        ? (error as { message: string }).message
+        : "Failed to fetch song stats";
+    console.error("Fetch song stats failed:", errorMessage);
+    yield put(songStatApiActions.error({ error: errorMessage }));
   }
 }
 
@@ -214,5 +235,6 @@ export function* songWatcherSaga() {
     takeLatest(SONG_API_ACTION_TYPE_STRINGS.FetchSearch, searchSongsSaga),
     takeLatest(SONG_API_ACTION_TYPE_STRINGS.FetchMySongs, getMySongs),
     takeLatest(SONG_API_ACTION_TYPE_STRINGS.FetchAll, getSongs),
+    takeLatest(SONG_API_ACTION_TYPE_STRINGS.FetchSongStats, getSongStatsSaga),
   ]);
 }

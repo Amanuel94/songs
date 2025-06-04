@@ -141,6 +141,7 @@ export const SONG_API_ACTION_TYPE_STRINGS = {
   FetchAll: "songApi/all",
   FetchSearch: "songApi/fetchSearch",
   FetchMySongs: "songApi/fetchMySongs",
+  FetchSongStats: "songApi/fetchSongStats",
 } as const;
 
 export interface UpsertSongActionType extends UnknownAction {
@@ -227,4 +228,20 @@ export interface FetchSearchResults extends BaseResponse {
   };
   total: number;
   message: string | undefined;
+}
+
+export interface FetchSongStatsActionType extends UnknownAction {
+  type: typeof SONG_API_ACTION_TYPE_STRINGS.FetchSongStats;
+  payload: {
+    req: {
+      startDate: string;
+      endDate: string;
+    };
+  };
+}
+
+export interface FetchSongStatsResponse extends BaseResponse {
+  data: {
+    songStats: SongStat[];
+  }
 }

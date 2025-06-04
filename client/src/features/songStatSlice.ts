@@ -1,19 +1,19 @@
 import { createSlice, Slice } from "@reduxjs/toolkit";
-import { APIFetchStatus } from "@types";
+import { APIFetchStatus, SongStat } from "@types";
 
-export interface SongApiState<T> {
+export interface SongStatApiState {
   status: APIFetchStatus;
   error: string | null;
-  data: T | undefined;
+  data: SongStat[] | undefined;
 }
 
-const initialState: SongApiState<any> = {
+const initialState: SongStatApiState = {
   status: APIFetchStatus.IDLE,
   error: null,
   data: undefined,
 };
-export const songSlice: Slice = createSlice({
-  name: "songsApi",
+export const songStatSlice: Slice = createSlice({
+  name: "songsStatApi",
   initialState: initialState,
   reducers: {
     success: (state, action) => {
@@ -40,5 +40,5 @@ export const songSlice: Slice = createSlice({
   },
 });
 
-export const songApiActions = songSlice.actions;
-export const songApiReducers = songSlice.reducer;
+export const songStatApiActions = songStatSlice.actions;
+export const songStatApiReducers = songStatSlice.reducer;

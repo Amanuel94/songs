@@ -53,12 +53,30 @@ export const updateSongStat = async (
   });
 
   if (!songStat) {
+    // Find the most recent SongStat before today
     const lastDayStat = await SongStat.findOne({
-      createdAt: {
-        $lt: date,
-        $gte: new Date(date.getTime() - 24 * 60 * 60 * 1000),
-      },
-    });
+      createdAt: { $lt: date }
+    }).sort({ createdAt: -1 });
+
+    // If there is a gap between lastDayStat and today, you may want to fill the gap
+    // by creating SongStat documents for each missing day, copying lastDayStat's values
+    let lastDate = lastDayStat ? new Date(lastDayStat.date) : null;
+    if (lastDate) {
+      // Fill the gap for each missing day
+      let gapDate = new Date(lastDate.getTime() + 24 * 60 * 60 * 1000);
+      while (gapDate < date) {
+        await SongStat.create({
+          numberOfSongs: lastDayStat?.numberOfSongs ?? 0,
+          numberOfSongsByGenre: lastDayStat?.numberOfSongsByGenre ?? {},
+          numberOfSongsByArtist: lastDayStat?.numberOfSongsByArtist ?? {},
+          numberOfSongsByAlbum: lastDayStat?.numberOfSongsByAlbum ?? {},
+          numberOfAlbumsByArtist: lastDayStat?.numberOfAlbumsByArtist ?? {},
+          numberOfAlbumsByGenre: lastDayStat?.numberOfAlbumsByGenre ?? {},
+          date: new Date(gapDate),
+        });
+        gapDate = new Date(gapDate.getTime() + 24 * 60 * 60 * 1000);
+      }
+    }
 
     // if no stat exists for today, create a new one
     songStat = new SongStat({

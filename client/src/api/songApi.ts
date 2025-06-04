@@ -13,7 +13,6 @@ const getSongById = async (id: string) => {
 };
 
 const updateSong = async (song: ISongFormInput & { id: string }) => {
-  
   const { id, ...songData } = song;
   const res = await instance.put(`/song/${id}`, songData);
   return r(res);
@@ -24,7 +23,7 @@ const deleteSong = async (id: string) => {
   return r(res);
 };
 
-const mySongs = async (page:number, limit:number) => {
+const mySongs = async (page: number, limit: number) => {
   const reqParams = new URLSearchParams();
   reqParams.append("page", page.toString());
   reqParams.append("limit", limit.toString());
@@ -55,7 +54,7 @@ const searchSongs = async (req: SearchQuery) => {
     reqParams.append("uploadedBy", req.uploadedBy);
   }
   const url = `/song/search?${reqParams.toString()}`;
-  console.log(url)
+  console.log(url);
   const res = await instance.post(url);
   return r(res);
 };
@@ -69,4 +68,23 @@ const allSongs = async (page: number, limit: number) => {
   return r(res);
 };
 
-export { createSong, updateSong, getSongById, deleteSong, searchSongs, mySongs, allSongs };
+const getSongStats = async (startDate: string, endDate: string) => {
+  const reqBody = {
+    startDate: startDate,
+    endDate: endDate
+  };
+  console.log("Request body for song stats:", reqBody);
+  const res = await instance.post("/song/stat", reqBody);
+  return r(res);
+};
+
+export {
+  createSong,
+  updateSong,
+  getSongById,
+  deleteSong,
+  searchSongs,
+  mySongs,
+  allSongs,
+  getSongStats,
+};
