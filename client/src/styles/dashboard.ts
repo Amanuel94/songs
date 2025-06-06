@@ -53,7 +53,7 @@ export const songCardStyles = {
     display: "inline-flex",
     flexDirection: "column",
     alignItems: "left",
-    width: "60%",
+    width: "90%",
     marginLeft: "10px",
     backgroundColor: "white",
     border: "1px solid #ccc",
@@ -77,6 +77,7 @@ export const songCardStyles = {
     textSize: "3px",
     width: "100%",
     maxHeight: "10px",
+    gap: "40px",
   }),
   listItem: css({
     display: "flex",
@@ -100,7 +101,7 @@ export const songCardStyles = {
     marginLeft: "0px",
     marginTop: "4px",
     padding: "0px",
-    width: "70px",
+    width: "90px",
     textOverflow: "ellipsis",
   },
 

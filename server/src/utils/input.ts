@@ -1,5 +1,6 @@
 import SongStat from "../models/SongStat";
 import Song from "../models/Song";
+import { setTimeout } from "timers/promises";
 
 export const sanitizeStringInput = (input: string): string => {
   // Remove leading and trailing whitespace
@@ -40,10 +41,10 @@ export const updateKeyValueAsync = async (
 // Function to update the song stat
 export const updateSongStat = async (
   song: { genre: string; artist: string; album: string | null },
-  v: number
+  v: number,
+  today: Date = new Date()
 ) => {
   // update the song stat for today
-  const today = new Date();
   const date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   let songStat = await SongStat.findOne({
     createdAt: {
@@ -51,13 +52,14 @@ export const updateSongStat = async (
       $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
     },
   });
-
   if (!songStat) {
     // Find the most recent SongStat before today
-    const lastDayStat = await SongStat.findOne({
-      createdAt: { $lt: date }
-    }).sort({ createdAt: -1 });
+    const lastDayStat = (await SongStat.find({ createdAt: { $gte: today} })
+      .sort({ createdAt: -1 })
+      .limit(1))[0];
 
+    // process.stdout.write(lastDayStat ? lastDayStat.numberOfSongs + "" : "Nope");
+    // setTimeout(1000)
     // If there is a gap between lastDayStat and today, you may want to fill the gap
     // by creating SongStat documents for each missing day, copying lastDayStat's values
     let lastDate = lastDayStat ? new Date(lastDayStat.date) : null;

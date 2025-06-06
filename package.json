@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "/",
-  "author": "Ben Elferink <ben.elferink@icloud.com> (https://github.com/BenElferink)",
+  "author": "Amanuel Tewodros",
   "repository": {
     "type": "git",
     "url": "https://github.com/BenElferink/mern-template.git"
   },
-  "bugs": {
-    "url": "https://github.com/BenElferink/mern-template/issues",
-    "email": "ben.elferink@icloud.com"
+  "scripts": {},
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0"
   },
-  "scripts": {}
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
 }

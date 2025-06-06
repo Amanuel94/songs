@@ -27,10 +27,10 @@ const SongStatStage = () => {
     dispatch(songStatApiActions.clear({}));
   }, []);
 
-  const startDate = new Date("2025-06-01");
+  const startDate = new Date("2024-05-01");
   const endDate = new Date();
   const [dateRange, setDateRange] = React.useState({
-    start: new Date("2025-06-01"),
+    start: new Date("2024-05-01"),
     end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // Add one day to include the end date
   });
 
@@ -112,6 +112,7 @@ const SongStatStage = () => {
           <div css={songStatStyles.topDivCont}>
             <div css={songStatStyles.linChart}>
               {/* Line graph for the number of songs per day*/}
+            
               <LineChart
                 width={500}
                 height={300}
