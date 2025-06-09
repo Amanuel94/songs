@@ -1,13 +1,9 @@
 {
-  "name": "mern-application",
+  "name": "mern",
   "version": "0.1.0",
   "private": true,
   "homepage": "/",
   "author": "Amanuel Tewodros",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BenElferink/mern-template.git"
-  },
   "scripts": {},
   "dependencies": {
     "@faker-js/faker": "^9.8.0"

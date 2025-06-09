@@ -73,11 +73,13 @@ export const artistDistribution = (
   return artistsChartData.sort((a, b) => b.albumCount - a.albumCount);
 };
 
-export const prepareSongStatData = (data: SongStat[], startDate: Date, endDate:Date) => {
-
+export const prepareSongStatData = (
+  data: SongStat[],
+  startDate: Date,
+  endDate: Date
+) => {
   data = data.filter(
-    (stat) =>
-      new Date(stat.date) >= startDate && new Date(stat.date) <= endDate
+    (stat) => new Date(stat.date) >= startDate && new Date(stat.date) <= endDate
   );
 
   console.log("Filtered Data:", data);
@@ -109,4 +111,13 @@ export const prepareSongStatData = (data: SongStat[], startDate: Date, endDate:D
     genreAlbumChartData,
     artistChartData,
   };
+};
+
+export const capitalizeFirstLetter = (str: string) => {
+  if (!str) return str; // Handle empty string case
+  const words = str.split(" ");
+  const capitalizedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return capitalizedWords.join(" ");
 };

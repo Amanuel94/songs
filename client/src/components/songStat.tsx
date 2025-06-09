@@ -23,18 +23,18 @@ import { prepareSongStatData, ToDateFormat } from "utils/utils";
 import Loading from "./Loading";
 
 const SongStatStage = () => {
-  useEffect(() => {
-    dispatch(songStatApiActions.clear({}));
-  }, []);
 
   const startDate = new Date("2024-05-01");
-  const endDate = new Date();
+  const endDate = new Date(); 
   const [dateRange, setDateRange] = React.useState({
     start: new Date("2024-05-01"),
     end: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // Add one day to include the end date
   });
+  const songData: SongStatApiState = useAppSelector((state) => state.songStat);
+  
 
   useEffect(() => {
+    dispatch(songStatApiActions.clear({}));
     const action = {
       type: SONG_API_ACTION_TYPE_STRINGS.FetchSongStats,
       payload: {
@@ -49,8 +49,6 @@ const SongStatStage = () => {
     dispatch(action);
   }, []);
 
-  const songData: SongStatApiState = useAppSelector((state) => state.songStat);
-
   const dispatch = useAppDispatch();
   const [res, setRes] = React.useState<ReturnType<
     typeof prepareSongStatData
@@ -61,6 +59,9 @@ const SongStatStage = () => {
   );
 
   useEffect(() => {
+    if (songData.data === null || songData.data === undefined) {
+      return;
+    }
     setRes(
       prepareSongStatData(
         songData.data as SongStat[],
@@ -69,6 +70,10 @@ const SongStatStage = () => {
       )
     );
   }, [dateRange]);
+
+  if (songData.data === null || songData.data === undefined) {
+    return <Loading />;
+  }
 
   if (res === null) {
     return <Loading />;

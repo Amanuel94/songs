@@ -110,6 +110,7 @@ export const songCardStyles = {
     flexDirection: "row",
     justifyContent: "space-between",
     // marginTop: "10px",
+    width: "100%",  
   }),
 
   btn: css({
